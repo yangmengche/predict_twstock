@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from colorama import Fore
 import numpy as np
 
-def plot(history):
+def plot(history, file=None):
   plt.subplot(211)
   plt.plot(range(1, len(history['loss'])+1), history['loss'], 'b', label='training loss')
   plt.plot(range(1, len(history['val_loss'])+1), history['val_loss'], 'r', label='val loss')
@@ -16,14 +16,22 @@ def plot(history):
   plt.ylabel('Validation MAE')
 
   plt.legend()
-  plt.show()  
+  if file:
+    plt.savefig(file)
+  else:
+    plt.show()
+  plt.close()
 
-def plot_predict(predicts, truths):
+def plot_predict(predicts, truths, file=None):
   plt.plot(range(len(predicts[:,0])), predicts, 'b', label='predict')
   plt.plot(range(len(truths)), truths, 'r', label='truth')
   plt.ylabel('price')
   plt.legend()
-  plt.show()
+  if file:
+    plt.savefig(file)
+  else:
+    plt.show()
+  plt.close()
 
 def predict_result(predicts, truths, log=False):
   under=0
@@ -33,7 +41,7 @@ def predict_result(predicts, truths, log=False):
   for i, r in enumerate(predicts):
     diff = truths[i] - r[0]
     total_diff += abs(diff)
-    if abs(diff) < truths[i]*0.005:
+    if abs(diff) < truths[i]*0.006:
       under += 1
       color = Fore.GREEN
     elif abs(diff) > truths[i]*0.01:

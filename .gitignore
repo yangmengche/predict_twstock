@@ -1,1 +1,4 @@
 download_data
+model
+*.png
+__pycache__
